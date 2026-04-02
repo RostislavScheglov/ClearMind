@@ -7,7 +7,9 @@ type NotifPref = OnboardingInput['notificationPref'];
 
 interface OnboardingStepperProps {
   onComplete: (data: OnboardingInput) => void;
+  onChoosePro: (data: OnboardingInput) => void;
   isSubmitting: boolean;
+  isUpgrading: boolean;
 }
 
 const INTENTS: { value: Intent; label: string; emoji: string }[] = [
@@ -18,7 +20,7 @@ const INTENTS: { value: Intent; label: string; emoji: string }[] = [
 
 const MOODS = ['😔', '😕', '😐', '🙂', '😊'];
 
-export function OnboardingStepper({ onComplete, isSubmitting }: OnboardingStepperProps) {
+export function OnboardingStepper({ onComplete, onChoosePro, isSubmitting, isUpgrading }: OnboardingStepperProps) {
   const [step, setStep] = useState(0);
   const [intent, setIntent] = useState<Intent | ''>('');
   const [moodScore, setMoodScore] = useState(5);
@@ -228,8 +230,19 @@ export function OnboardingStepper({ onComplete, isSubmitting }: OnboardingSteppe
           <Button
             size="lg"
             className="w-full"
+            onClick={() => { if (intent) onChoosePro({ intent, moodScore, notificationPref }); }}
+            isLoading={isUpgrading}
+            disabled={isSubmitting}
+          >
+            Choose Pro — €5/month
+          </Button>
+          <Button
+            size="lg"
+            variant="secondary"
+            className="w-full mt-3"
             onClick={() => { if (intent) onComplete({ intent, moodScore, notificationPref }); }}
             isLoading={isSubmitting}
+            disabled={isUpgrading}
           >
             Start Free
           </Button>
