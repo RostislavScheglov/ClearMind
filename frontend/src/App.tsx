@@ -10,6 +10,7 @@ import { InsightsPage } from './pages/InsightsPage';
 import { AccountPage } from './pages/AccountPage';
 import { BreathingPage } from './pages/BreathingPage';
 import { ExercisesPage } from './pages/ExercisesPage';
+import { PanicPage } from './pages/PanicPage';
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
 import { AppShell } from './components/layout/AppShell';
 
@@ -41,6 +42,16 @@ export default function App() {
             }
           />
 
+          {/* Panic page (full-screen, outside AppShell) */}
+          <Route
+            path="/panic"
+            element={
+              <ProtectedRoute>
+                <PanicPage />
+              </ProtectedRoute>
+            }
+          />
+
           {/* Protected routes with shell */}
           <Route
             path="/"
@@ -51,6 +62,7 @@ export default function App() {
             }
           >
             <Route index element={<DashboardPage />} />
+            <Route path="chat" element={<ChatPage />} />
             <Route path="chat/:sessionId" element={<ChatPage />} />
             <Route path="breathing" element={<BreathingPage />} />
             <Route path="exercises" element={<ExercisesPage />} />

@@ -1,4 +1,5 @@
 export const FREE_SESSION_LIMIT = 3;
+export const FREE_MESSAGE_LIMIT = 3;
 export const MOOD_MIN = 1;
 export const MOOD_MAX = 10;
 export const INTENTS = ['anxiety', 'sleep', 'focus'] as const;

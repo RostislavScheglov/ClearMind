@@ -23,6 +23,7 @@ export function MoodTimeline() {
   }));
 
   const trendIcon = data.trend === 'improving' ? '↑' : data.trend === 'declining' ? '↓' : '→';
+  const isSinglePoint = chartData.length === 1;
 
   return (
     <Card>
@@ -42,8 +43,12 @@ export function MoodTimeline() {
         </div>
       </div>
       <ResponsiveContainer width="100%" height={200}>
-        <LineChart data={chartData}>
-          <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+        <LineChart data={chartData} margin={{ left: 0, right: 16, top: 8, bottom: 0 }}>
+          <XAxis
+            dataKey="date"
+            tick={{ fontSize: 12 }}
+            padding={isSinglePoint ? { left: 40, right: 200 } : { left: 20, right: 20 }}
+          />
           <YAxis domain={[1, 10]} tick={{ fontSize: 12 }} />
           <Tooltip
             content={({ payload }) => {

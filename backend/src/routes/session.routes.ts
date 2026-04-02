@@ -8,6 +8,8 @@ const router = Router();
 
 router.post('/', authMiddleware, sessionController.create);
 
+router.post('/panic', authMiddleware, sessionController.createPanic);
+
 router.get('/', authMiddleware, validate(sessionsQuerySchema, 'query'), sessionController.list);
 
 router.get('/:id', authMiddleware, validate(sessionParamsSchema, 'params'), sessionController.getById);

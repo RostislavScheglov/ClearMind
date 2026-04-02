@@ -1,21 +1,54 @@
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useSessionDetail, useSendMessage } from '../api/sessions';
+import { useSessionDetail, useSendMessage, useCreateSession } from '../api/sessions';
 import { MessageList } from '../components/chat/MessageList';
 import { ChatInput } from '../components/chat/ChatInput';
 import { PaywallModal } from '../components/billing/PaywallModal';
 import { Spinner } from '../components/ui/Spinner';
 import { useAuthStore } from '../store/authStore';
+import type { Message } from '@shared/types';
 
 export function ChatPage() {
   const { sessionId } = useParams<{ sessionId: string }>();
   const navigate = useNavigate();
-  const { data: session, isLoading } = useSessionDetail(sessionId!);
-  const sendMessage = useSendMessage(sessionId!);
+  const createSession = useCreateSession();
   const [showPaywall, setShowPaywall] = useState(false);
+  const [pendingMessage, setPendingMessage] = useState<Message | null>(null);
   const { user } = useAuthStore();
 
-  if (isLoading) {
+  // If no sessionId, auto-create a new session
+  useEffect(() => {
+    if (!sessionId && !createSession.isPending && !createSession.isSuccess) {
+      createSession.mutate(undefined, {
+        onSuccess: (data) => {
+          navigate(`/chat/${data.id}`, { replace: true });
+        },
+        onError: (error) => {
+          const err = error as { response?: { status?: number } };
+          if (err?.response?.status === 402) {
+            setShowPaywall(true);
+          }
+        },
+      });
+    }
+  }, [sessionId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const { data: session, isLoading } = useSessionDetail(sessionId);
+  const sendMessage = useSendMessage(sessionId || '');
+
+  // Merge server messages with the optimistic pending message
+  const displayMessages = useMemo(() => {
+    const serverMessages = session?.messages || [];
+    if (
+      pendingMessage &&
+      !serverMessages.some((m) => m.content === pendingMessage.content && m.role === 'user')
+    ) {
+      return [...serverMessages, pendingMessage];
+    }
+    return serverMessages;
+  }, [session?.messages, pendingMessage]);
+
+  if (!sessionId || isLoading || createSession.isPending) {
     return (
       <div className="flex-1 flex items-center justify-center">
         <Spinner />
@@ -32,11 +65,24 @@ export function ChatPage() {
   }
 
   const handleSend = (content: string) => {
+    const optimistic: Message = {
+      id: `pending-${Date.now()}`,
+      sessionId: sessionId || '',
+      role: 'user',
+      content,
+      createdAt: new Date().toISOString(),
+    };
+    setPendingMessage(optimistic);
+
     sendMessage.mutate(
       content,
       {
-        onError: (error: any) => {
-          if (error?.response?.status === 402) {
+        onSettled: () => {
+          setPendingMessage(null);
+        },
+        onError: (error) => {
+          const err = error as { response?: { status?: number } };
+          if (err?.response?.status === 402) {
             setShowPaywall(true);
           }
         },
@@ -57,7 +103,7 @@ export function ChatPage() {
       </div>
 
       <MessageList
-        messages={session.messages || []}
+        messages={displayMessages}
         isLoading={sendMessage.isPending}
         intent={user?.intent}
         onSuggestionClick={handleSend}

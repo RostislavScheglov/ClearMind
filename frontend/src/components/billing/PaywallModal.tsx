@@ -25,8 +25,10 @@ export function PaywallModal({ isOpen, onClose }: PaywallModalProps) {
           </div>
           <ul className="text-sm text-gray-600 space-y-1">
             <li>✓ Unlimited reflection sessions</li>
+            <li>✓ Unlimited messages per session</li>
             <li>✓ AI-powered behavioral insights</li>
             <li>✓ Full mood history & trends</li>
+            <li>✓ 🚨 Panic Button — instant crisis support</li>
           </ul>
         </div>
 

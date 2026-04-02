@@ -46,6 +46,11 @@ export const useAuthStore = create<AuthState>()(
     {
       name: 'clearmind-auth',
       partialize: (state) => ({ token: state.token }),
+      merge: (persistedState, currentState) => ({
+        ...currentState,
+        ...(persistedState as Partial<AuthState>),
+        isAuthenticated: !!(persistedState as Partial<AuthState>)?.token,
+      }),
     }
   )
 );

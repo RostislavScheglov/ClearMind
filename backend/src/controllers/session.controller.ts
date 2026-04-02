@@ -27,4 +27,9 @@ export const sessionController = {
     );
     res.json(result);
   }),
+
+  createPanic: catchAsync(async (req: Request, res: Response) => {
+    const result = await sessionService.createPanicSession(req.user!.id);
+    res.status(201).json(result);
+  }),
 };

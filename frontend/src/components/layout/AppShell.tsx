@@ -1,5 +1,7 @@
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { useAuthStore } from '../../store/authStore';
+import { PaywallModal } from '../billing/PaywallModal';
 
 const navItems = [
   { path: '/', label: 'Home', icon: '🏠', exact: true },
@@ -18,7 +20,17 @@ const mobileNavItems = navItems.filter((item) =>
 
 export function AppShell() {
   const location = useLocation();
-  const { user } = useAuthStore();
+  const navigate = useNavigate();
+  const { user, subscription } = useAuthStore();
+  const [showPaywall, setShowPaywall] = useState(false);
+
+  const handlePanic = () => {
+    if (subscription?.tier === 'pro') {
+      navigate('/panic');
+    } else {
+      setShowPaywall(true);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
@@ -68,6 +80,17 @@ export function AppShell() {
           </Link>
         ))}
       </nav>
+
+      {/* Floating Panic Button */}
+      <button
+        onClick={handlePanic}
+        className="fixed bottom-24 right-4 md:bottom-6 md:right-6 z-50 w-14 h-14 bg-red-600 hover:bg-red-500 text-white rounded-full shadow-lg flex items-center justify-center text-2xl transition-colors active:scale-95"
+        title="Panic Button — instant crisis support"
+      >
+        🚨
+      </button>
+
+      <PaywallModal isOpen={showPaywall} onClose={() => setShowPaywall(false)} />
     </div>
   );
 }

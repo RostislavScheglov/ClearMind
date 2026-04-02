@@ -45,10 +45,20 @@ export function OnboardingStepper({ onComplete, isSubmitting }: OnboardingSteppe
       {step === 0 && (
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-4">Welcome to ClearMind 🧠</h1>
-          <p className="text-gray-600 mb-8">
+          <p className="text-gray-600 mb-4">
             Your daily mental clarity companion. Quick 2–5 minute AI-guided
             reflections that feel like talking to someone — not blank journaling.
           </p>
+          <div className="bg-red-50 border border-red-200 rounded-xl p-3 mb-8 text-left">
+            <div className="flex items-center gap-2 mb-1">
+              <span>🚨</span>
+              <span className="font-semibold text-red-700 text-sm">Panic Button</span>
+            </div>
+            <p className="text-sm text-red-600">
+              Having a panic attack? Hit the Panic Button for instant AI crisis
+              support with guided breathing — available with Pro.
+            </p>
+          </div>
           <Button size="lg" onClick={next}>
             Get Started
           </Button>
@@ -149,7 +159,8 @@ export function OnboardingStepper({ onComplete, isSubmitting }: OnboardingSteppe
           <h2 className="text-2xl font-bold mb-2">Your first session is ready! ✨</h2>
           <p className="text-gray-500 mb-6">
             Try 3 free reflection sessions. Upgrade anytime for unlimited
-            sessions and AI-powered insights.
+            sessions, AI-powered insights, and the 🚨 Panic Button for
+            instant crisis support with guided breathing.
           </p>
           <div className="bg-gray-50 rounded-xl p-4 mb-6 text-left">
             <div className="flex justify-between items-center mb-2">
@@ -158,8 +169,10 @@ export function OnboardingStepper({ onComplete, isSubmitting }: OnboardingSteppe
             </div>
             <ul className="text-sm text-gray-600 space-y-1">
               <li>✓ 3 reflection sessions</li>
+              <li>✓ 3 messages per session</li>
               <li>✓ Mood tracking</li>
               <li className="text-gray-400">✗ AI insights</li>
+              <li className="text-gray-400">✗ 🚨 Panic Button</li>
             </ul>
           </div>
           <div className="bg-primary-50 rounded-xl p-4 mb-6 text-left border border-primary-200">
@@ -169,8 +182,10 @@ export function OnboardingStepper({ onComplete, isSubmitting }: OnboardingSteppe
             </div>
             <ul className="text-sm text-gray-600 space-y-1">
               <li>✓ Unlimited sessions</li>
+              <li>✓ Unlimited messages</li>
               <li>✓ Mood tracking</li>
               <li>✓ AI-powered insights</li>
+              <li>✓ 🚨 Panic Button — instant crisis support</li>
             </ul>
           </div>
           <Button

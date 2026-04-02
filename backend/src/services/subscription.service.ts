@@ -63,8 +63,9 @@ export const subscriptionService = {
   async handleWebhook(rawBody: Buffer, signature: string) {
     let event: Stripe.Event;
     try {
-    //   event = stripe.webhooks.constructEvent(rawBody, signature, env.STRIPE_WEBHOOK_SECRET);
-      event = stripe.webhooks.constructEvent(rawBody, signature, '');
+      event = env.STRIPE_WEBHOOK_SECRET
+        ? stripe.webhooks.constructEvent(rawBody, signature, env.STRIPE_WEBHOOK_SECRET)
+        : JSON.parse(rawBody.toString()) as Stripe.Event;
     } catch {
       throw new AppError(400, 'Invalid webhook signature');
     }

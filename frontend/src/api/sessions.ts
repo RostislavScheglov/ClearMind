@@ -15,6 +15,19 @@ export function useCreateSession() {
   });
 }
 
+export function useCreatePanicSession() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async () => {
+      const { data } = await apiClient.post('/api/sessions/panic');
+      return data as { session: Session; messages: Message[] };
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['sessions'] });
+    },
+  });
+}
+
 export function useSessions(limit = 20, offset = 0) {
   return useQuery<Session[]>({
     queryKey: ['sessions', limit, offset],
@@ -48,7 +61,36 @@ export function useSendMessage(sessionId: string) {
       });
       return data as { userMessage: Message; assistantMessage: Message };
     },
-    onSuccess: () => {
+    onMutate: async (content: string) => {
+      await queryClient.cancelQueries({ queryKey: ['sessions', sessionId] });
+
+      const previous = queryClient.getQueryData<Session & { messages: Message[] }>(['sessions', sessionId]);
+
+      if (previous) {
+        const optimisticMessage: Message = {
+          id: `temp-${Date.now()}`,
+          sessionId,
+          role: 'user',
+          content,
+          createdAt: new Date().toISOString(),
+        };
+        queryClient.setQueryData<Session & { messages: Message[] }>(
+          ['sessions', sessionId],
+          {
+            ...previous,
+            messages: [...(previous.messages || []), optimisticMessage],
+          },
+        );
+      }
+
+      return { previous };
+    },
+    onError: (_err, _content, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData(['sessions', sessionId], context.previous);
+      }
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['sessions', sessionId] });
     },
   });
