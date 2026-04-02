@@ -6,7 +6,7 @@ import { PaywallModal } from '../billing/PaywallModal';
 const navItems = [
   { path: '/', label: 'Home', icon: '🏠', exact: true },
   { path: '/chat', label: 'Chat', icon: '💬' },
-  { path: '/breathing', label: 'Breathe', icon: '🌬️' },
+  { path: '/breathing', label: 'Breathe', icon: '🌬️', pro: true },
   { path: '/exercises', label: 'Exercises', icon: '🏋️' },
   { path: '/history', label: 'History', icon: '📋' },
   { path: '/insights', label: 'Insights', icon: '✨' },
@@ -41,20 +41,35 @@ export function AppShell() {
           {user && <p className="text-sm text-gray-500 mt-1">Hi, {user.name}</p>}
         </div>
         <nav className="flex flex-col gap-1 flex-1">
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
-                (item.exact ? location.pathname === item.path : location.pathname.startsWith(item.path))
-                  ? 'bg-primary-50 text-primary-700 font-medium'
-                  : 'text-gray-600 hover:bg-gray-100'
-              }`}
-            >
-              <span>{item.icon}</span>
-              {item.label}
-            </Link>
-          ))}
+          {navItems.map((item) => {
+            if (item.pro && subscription?.tier !== 'pro') {
+              return (
+                <button
+                  key={item.path}
+                  onClick={() => setShowPaywall(true)}
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors text-gray-600 hover:bg-gray-100 w-full text-left"
+                >
+                  <span>{item.icon}</span>
+                  {item.label}
+                  <span className="ml-auto text-[10px] bg-primary-100 text-primary-700 px-2 py-0.5 rounded-full font-semibold">PRO</span>
+                </button>
+              );
+            }
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
+                  (item.exact ? location.pathname === item.path : location.pathname.startsWith(item.path))
+                    ? 'bg-primary-50 text-primary-700 font-medium'
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                <span>{item.icon}</span>
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
       </aside>
 
@@ -67,18 +82,32 @@ export function AppShell() {
 
       {/* Mobile bottom nav */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-2 z-40">
-        {mobileNavItems.map((item) => (
-          <Link
-            key={item.path}
-            to={item.path}
-            className={`flex flex-col items-center gap-0.5 text-xs ${
-              (item.exact ? location.pathname === item.path : location.pathname.startsWith(item.path)) ? 'text-primary-700' : 'text-gray-500'
-            }`}
-          >
-            <span className="text-lg">{item.icon}</span>
-            {item.label}
-          </Link>
-        ))}
+        {mobileNavItems.map((item) => {
+          if (item.pro && subscription?.tier !== 'pro') {
+            return (
+              <button
+                key={item.path}
+                onClick={() => setShowPaywall(true)}
+                className="flex flex-col items-center gap-0.5 text-xs text-gray-500"
+              >
+                <span className="text-lg">{item.icon}</span>
+                {item.label}
+              </button>
+            );
+          }
+          return (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`flex flex-col items-center gap-0.5 text-xs ${
+                (item.exact ? location.pathname === item.path : location.pathname.startsWith(item.path)) ? 'text-primary-700' : 'text-gray-500'
+              }`}
+            >
+              <span className="text-lg">{item.icon}</span>
+              {item.label}
+            </Link>
+          );
+        })}
       </nav>
 
       {/* Floating Panic Button */}

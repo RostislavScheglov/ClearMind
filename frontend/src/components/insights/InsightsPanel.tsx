@@ -31,13 +31,18 @@ export function InsightsPanel() {
 }
 
 function InsightsFetcher() {
-  const { data, isLoading, isError } = useInsights();
+  const { data, isLoading, isFetching, isError, refetch } = useInsights();
 
   if (isLoading) return <Spinner />;
   if (isError) {
     return (
       <Card>
-        <p className="text-center text-gray-400">Insights temporarily unavailable.</p>
+        <p className="text-center text-gray-400 mb-3">Insights temporarily unavailable.</p>
+        <div className="text-center">
+          <Button onClick={() => refetch()} isLoading={isFetching}>
+            Retry
+          </Button>
+        </div>
       </Card>
     );
   }
@@ -45,14 +50,24 @@ function InsightsFetcher() {
   if (data?.message) {
     return (
       <Card>
-        <p className="text-center text-gray-500">{data.message}</p>
+        <p className="text-center text-gray-500 mb-3">{data.message}</p>
+        <div className="text-center">
+          <Button onClick={() => refetch()} isLoading={isFetching}>
+            Generate Insights
+          </Button>
+        </div>
       </Card>
     );
   }
 
   return (
     <Card>
-      <h3 className="font-semibold mb-3">✨ Your Insights</h3>
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="font-semibold">✨ Your Insights</h3>
+        <Button onClick={() => refetch()} isLoading={isFetching}>
+          Refresh
+        </Button>
+      </div>
       <ul className="space-y-3">
         {data?.insights.map((insight, i) => (
           <li key={i} className="flex gap-2 text-sm text-gray-700">

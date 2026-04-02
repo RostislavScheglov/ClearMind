@@ -28,6 +28,7 @@ export function PaywallModal({ isOpen, onClose }: PaywallModalProps) {
             <li>✓ Unlimited messages per session</li>
             <li>✓ AI-powered behavioral insights</li>
             <li>✓ Full mood history & trends</li>
+            <li>✓ 🌬️ Breathing exercises</li>
             <li>✓ 🚨 Panic Button — instant crisis support</li>
           </ul>
         </div>

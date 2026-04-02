@@ -79,13 +79,16 @@ export function DashboardPage() {
       </Card>
 
       <div className="grid grid-cols-2 gap-3">
-        <Card onClick={() => navigate('/breathing')}>
-          <div className="flex flex-col items-center text-center gap-2 py-2">
+        <Card onClick={() => subscription?.tier === 'pro' ? navigate('/breathing') : setShowPaywall(true)}>
+          <div className="flex flex-col items-center text-center gap-2 py-2 relative">
             <span className="text-3xl">🌬️</span>
             <div>
               <h3 className="font-semibold">Breathing Exercise</h3>
               <p className="text-xs text-gray-500">4-7-8 calming technique</p>
             </div>
+            {subscription?.tier !== 'pro' && (
+              <span className="absolute top-0 right-0 text-[10px] bg-primary-100 text-primary-700 px-2 py-0.5 rounded-full font-semibold">PRO</span>
+            )}
           </div>
         </Card>
         <Card onClick={() => navigate('/exercises')}>

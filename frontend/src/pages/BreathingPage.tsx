@@ -1,7 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { BreathingExercise } from '../components/breathing/BreathingExercise';
+import { useAuthStore } from '../store/authStore';
 
 export function BreathingPage() {
+  const { subscription } = useAuthStore();
+
+  if (subscription?.tier !== 'pro') {
+    return <Navigate to="/" replace />;
+  }
+
   return (
     <div className="fixed inset-0 bg-slate-900 flex flex-col z-50">
       {/* Top bar */}

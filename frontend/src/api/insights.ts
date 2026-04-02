@@ -9,7 +9,7 @@ export function useInsights() {
       const { data } = await apiClient.get('/api/insights');
       return data;
     },
-    retry: false,
-    staleTime: 5 * 60_000,
+    retry: 1,
+    staleTime: 60_000,
   });
 }

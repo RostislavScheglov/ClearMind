@@ -25,7 +25,7 @@ export function OnboardingPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white px-4 py-12">
+    <div className="min-h-screen flex items-start justify-center bg-white px-4 py-12 overflow-y-auto">
       <OnboardingStepper onComplete={handleComplete} isSubmitting={saveOnboarding.isPending} />
     </div>
   );

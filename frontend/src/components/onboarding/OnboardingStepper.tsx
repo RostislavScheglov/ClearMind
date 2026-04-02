@@ -45,10 +45,47 @@ export function OnboardingStepper({ onComplete, isSubmitting }: OnboardingSteppe
       {step === 0 && (
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-4">Welcome to ClearMind 🧠</h1>
-          <p className="text-gray-600 mb-4">
+          <p className="text-gray-600 mb-6">
             Your daily mental clarity companion. Quick 2–5 minute AI-guided
             reflections that feel like talking to someone — not blank journaling.
           </p>
+          <div className="text-left mb-6 space-y-3">
+            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+              <span className="text-xl">💬</span>
+              <div>
+                <div className="font-medium text-sm">AI-Guided Reflections</div>
+                <p className="text-xs text-gray-500">Structured 2–5 min sessions that feel like a real conversation</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+              <span className="text-xl">📊</span>
+              <div>
+                <div className="font-medium text-sm">Mood Tracking</div>
+                <p className="text-xs text-gray-500">Quick daily check-ins with visual trends over time</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+              <span className="text-xl">✨</span>
+              <div>
+                <div className="font-medium text-sm">AI-Powered Insights</div>
+                <p className="text-xs text-gray-500">Discover patterns in your mood and reflections</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+              <span className="text-xl">🌬️</span>
+              <div>
+                <div className="font-medium text-sm">Breathing Exercises</div>
+                <p className="text-xs text-gray-500">Guided breathing to calm your mind in moments of stress</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+              <span className="text-xl">🧘</span>
+              <div>
+                <div className="font-medium text-sm">Anxiety Relief Exercises</div>
+                <p className="text-xs text-gray-500">Text-based techniques to manage overthinking and stress</p>
+              </div>
+            </div>
+          </div>
           <div className="bg-red-50 border border-red-200 rounded-xl p-3 mb-8 text-left">
             <div className="flex items-center gap-2 mb-1">
               <span>🚨</span>
