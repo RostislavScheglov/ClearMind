@@ -47,6 +47,27 @@ export function DashboardPage() {
         </div>
       </Card>
 
+      <div className="grid grid-cols-2 gap-3">
+        <Card onClick={() => navigate('/breathing')}>
+          <div className="flex flex-col items-center text-center gap-2 py-2">
+            <span className="text-3xl">🌬️</span>
+            <div>
+              <h3 className="font-semibold">Breathing Exercise</h3>
+              <p className="text-xs text-gray-500">4-7-8 calming technique</p>
+            </div>
+          </div>
+        </Card>
+        <Card onClick={() => navigate('/exercises')}>
+          <div className="flex flex-col items-center text-center gap-2 py-2">
+            <span className="text-3xl">🏋️</span>
+            <div>
+              <h3 className="font-semibold">Exercise Library</h3>
+              <p className="text-xs text-gray-500">Quick anxiety relief guides</p>
+            </div>
+          </div>
+        </Card>
+      </div>
+
       <MoodCheckinWidget />
       <MoodTimeline />
       <InsightsPanel />

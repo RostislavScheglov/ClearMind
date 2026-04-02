@@ -8,6 +8,8 @@ import { ChatPage } from './pages/ChatPage';
 import { SessionHistoryPage } from './pages/SessionHistoryPage';
 import { InsightsPage } from './pages/InsightsPage';
 import { AccountPage } from './pages/AccountPage';
+import { BreathingPage } from './pages/BreathingPage';
+import { ExercisesPage } from './pages/ExercisesPage';
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
 import { AppShell } from './components/layout/AppShell';
 
@@ -50,6 +52,8 @@ export default function App() {
           >
             <Route index element={<DashboardPage />} />
             <Route path="chat/:sessionId" element={<ChatPage />} />
+            <Route path="breathing" element={<BreathingPage />} />
+            <Route path="exercises" element={<ExercisesPage />} />
             <Route path="history" element={<SessionHistoryPage />} />
             <Route path="insights" element={<InsightsPage />} />
             <Route path="account" element={<AccountPage />} />
