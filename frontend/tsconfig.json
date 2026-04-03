@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "ignoreDeprecations": "6.0",
     "target": "ES2020",
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
@@ -20,7 +19,7 @@
     "paths": {
       "@shared/*": ["../shared/*"]
     },
-    "baseUrl": "."
+    "rootDirs": ["./src", "../shared"]
   },
   "include": ["src", "../shared"]
 }
